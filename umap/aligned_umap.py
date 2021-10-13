@@ -249,6 +249,15 @@ class AlignedUMAP(BaseEstimator):
         force_approximation_algorithm=False,
         verbose=False,
         unique=False,
+        n_jobs=-1,
+        transform_mode="embedding",
+        tqdm_kwds=None,
+        densmap=False,
+        dens_lambda=2.0,
+        dens_frac=0.3,
+        dens_var_shift=0.1,
+        output_dens=False,
+        disconnection_distance=None,
     ):
 
         self.n_neighbors = n_neighbors
@@ -284,6 +293,16 @@ class AlignedUMAP(BaseEstimator):
         self.a = a
         self.b = b
 
+        self.n_jobs = n_jobs,
+        self.transform_mode = transform_mode,
+        self.tqdm_kwds = tqdm_kwds,
+        self.densmap = densmap,
+        self.dens_lambda = dens_lambda,
+        self.dens_frac = dens_frac,
+        self.dens_var_shift = dens_var_shift,
+        self.output_dens = output_dens,
+        self.disconnection_distance = disconnection_distance,
+
     def fit(self, X, y=None, **fit_params):
         if "relations" not in fit_params:
             raise ValueError(
@@ -304,31 +323,41 @@ class AlignedUMAP(BaseEstimator):
         self.mappers_ = [
             UMAP(
                 n_neighbors=get_nth_item_or_val(self.n_neighbors, n),
-                min_dist=get_nth_item_or_val(self.min_dist, n),
-                n_epochs=get_nth_item_or_val(self.n_epochs, n),
-                repulsion_strength=get_nth_item_or_val(self.repulsion_strength, n),
-                learning_rate=get_nth_item_or_val(self.learning_rate, n),
-                spread=get_nth_item_or_val(self.spread, n),
-                negative_sample_rate=get_nth_item_or_val(self.negative_sample_rate, n),
-                local_connectivity=get_nth_item_or_val(self.local_connectivity, n),
-                set_op_mix_ratio=get_nth_item_or_val(self.set_op_mix_ratio, n),
-                unique=get_nth_item_or_val(self.unique, n),
                 n_components=self.n_components,
                 metric=self.metric,
                 metric_kwds=self.metric_kwds,
+                n_epochs=get_nth_item_or_val(self.n_epochs, n),
+                learning_rate=get_nth_item_or_val(self.learning_rate, n),
+                init=get_nth_item_or_val(self.init, n),
+                min_dist=get_nth_item_or_val(self.min_dist, n),
+                spread=get_nth_item_or_val(self.spread, n),
                 low_memory=self.low_memory,
+                n_jobs=get_nth_item_or_val(self.n_jobs, n),
+                set_op_mix_ratio=get_nth_item_or_val(self.set_op_mix_ratio, n),
+                local_connectivity=get_nth_item_or_val(self.local_connectivity, n),
+                repulsion_strength=get_nth_item_or_val(self.repulsion_strength, n),
+                negative_sample_rate=get_nth_item_or_val(self.negative_sample_rate, n),
+                transform_queue_size=self.transform_queue_size,
+                a=self.a,
+                b=self.b,
                 random_state=self.random_state,
                 angular_rp_forest=self.angular_rp_forest,
-                transform_queue_size=self.transform_queue_size,
                 target_n_neighbors=self.target_n_neighbors,
                 target_metric=self.target_metric,
                 target_metric_kwds=self.target_metric_kwds,
                 target_weight=self.target_weight,
                 transform_seed=self.transform_seed,
+                transform_mode=self.transform_mode,
                 force_approximation_algorithm=self.force_approximation_algorithm,
                 verbose=self.verbose,
-                a=self.a,
-                b=self.b,
+                tqdm_kwds=get_nth_item_or_val(self.tqdm_kwds, n),
+                unique=get_nth_item_or_val(self.unique, n),
+                densmap=get_nth_item_or_val(self.densmap, n),
+                dens_lambda=get_nth_item_or_val(self.dens_lambda, n),
+                dens_frac=get_nth_item_or_val(self.dens_frac, n),
+                dens_var_shift=get_nth_item_or_val(self.dens_var_shift, n),
+                output_dens=get_nth_item_or_val(self.output_dens, n),
+                disconnection_distance=get_nth_item_or_val(self.disconnection_distance, n),
             ).fit(X[n])
             for n in range(self.n_models_)
         ]
