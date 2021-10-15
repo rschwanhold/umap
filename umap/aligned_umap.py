@@ -293,15 +293,15 @@ class AlignedUMAP(BaseEstimator):
         self.a = a
         self.b = b
 
-        self.n_jobs = n_jobs,
-        self.transform_mode = transform_mode,
-        self.tqdm_kwds = tqdm_kwds,
-        self.densmap = densmap,
-        self.dens_lambda = dens_lambda,
-        self.dens_frac = dens_frac,
-        self.dens_var_shift = dens_var_shift,
-        self.output_dens = output_dens,
-        self.disconnection_distance = disconnection_distance,
+        self.n_jobs = n_jobs
+        self.transform_mode = transform_mode
+        self.tqdm_kwds = tqdm_kwds
+        self.densmap = densmap
+        self.dens_lambda = dens_lambda
+        self.dens_frac = dens_frac
+        self.dens_var_shift = dens_var_shift
+        self.output_dens = output_dens
+        self.disconnection_distance = disconnection_distance
 
     def fit(self, X, y=None, **fit_params):
         if "relations" not in fit_params:
