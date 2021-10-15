@@ -328,7 +328,7 @@ class AlignedUMAP(BaseEstimator):
                 metric_kwds=self.metric_kwds,
                 n_epochs=get_nth_item_or_val(self.n_epochs, n),
                 learning_rate=get_nth_item_or_val(self.learning_rate, n),
-                init=get_nth_item_or_val(self.init, n),
+                init=self.init,
                 min_dist=get_nth_item_or_val(self.min_dist, n),
                 spread=get_nth_item_or_val(self.spread, n),
                 low_memory=self.low_memory,
